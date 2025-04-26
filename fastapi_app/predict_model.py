@@ -8,7 +8,7 @@ from torchvision.models import efficientnet_b3
 
 # === 경로 설정 ===
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_PATH = os.path.join(BASE_DIR, "model", "efficientnet_b3_best.pth")
+MODEL_PATH = os.path.join(BASE_DIR, "model", "best_model.pth")
 CLASS_MAPPING_PATH = os.path.join(BASE_DIR, "data", "class_idx_to_id.json")
 
 # === 클래스 매핑 로드 (인덱스 → class_id)
@@ -17,7 +17,7 @@ with open(CLASS_MAPPING_PATH, "r", encoding="utf-8") as f:
 
 # === 전처리 정의
 predict_transform = transforms.Compose([
-    transforms.Resize((512, 390)),
+    transforms.Resize(300),
     transforms.CenterCrop(300),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406],
@@ -32,7 +32,7 @@ def load_model():
     if _model is None:
         model = efficientnet_b3(weights=None)
         model.classifier[1] = torch.nn.Linear(model.classifier[1].in_features, len(idx_to_class_id))
-        model.load_state_dict(torch.load(MODEL_PATH, map_location=torch.device("cpu")))
+        model.load_state_dict(torch.load(MODEL_PATH, map_location=torch.device("cuda" if torch.cuda.is_available() else "cpu")))
         model.eval()
         _model = model
     return _model

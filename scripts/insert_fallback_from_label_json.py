@@ -11,12 +11,12 @@ skipped_ids = []
 failed_ids = []
 
 def insert_from_fallback_json():
-    log_info("🚀 Fallback JSON 삽입 시작")
+    log_info(" Fallback JSON 삽입 시작")
 
     for i in range(1, 11):
         base_folder = os.path.join(FALLBACK_LABEL_PATH, f"VL_{i}_단일")
         if not os.path.isdir(base_folder):
-            log_warn(f"📁 폴더 없음: {base_folder}")
+            log_warn(f" 폴더 없음: {base_folder}")
             continue
 
         for subfolder in os.listdir(base_folder):
@@ -51,7 +51,7 @@ def insert_from_fallback_json():
                     pill = PillInfo(
                                 class_id=class_id,
                                 item_seq=image.get("item_seq"),
-                                dl_name=image.get("dl_name"),              # ✅ 수정됨
+                                dl_name=image.get("dl_name"),              #  수정됨
                                 dl_material=image.get("dl_material"),
                                 dl_company=image.get("dl_company"),
                                 di_company_mf=image.get("di_company_mf"),
@@ -65,16 +65,16 @@ def insert_from_fallback_json():
 
                     db.add(pill)
                     inserted_ids.append(class_id)
-                    log_info(f"✅ INSERT: {class_id} - {pill.item_name}")
+                    log_info(f" INSERT: {class_id} - {pill.item_name}")
 
             except Exception as e:
-                log_error(f"❌ ERROR: {class_id} - {e}")
+                log_error(f" ERROR: {class_id} - {e}")
                 failed_ids.append(class_id)
                 continue
 
     db.commit()
     db.close()
-    log_info(f"\n📦 삽입 완료: {len(inserted_ids)}개, SKIP: {len(skipped_ids)}개, 실패: {len(failed_ids)}개")
+    log_info(f"\n 삽입 완료: {len(inserted_ids)}개, SKIP: {len(skipped_ids)}개, 실패: {len(failed_ids)}개")
 
     # 결과 로그 파일 저장
     with open("inserted_class_ids.txt", "w", encoding="utf-8") as f:
@@ -84,7 +84,7 @@ def insert_from_fallback_json():
     with open("failed_class_ids.txt", "w", encoding="utf-8") as f:
         f.write("\n".join(failed_ids))
 
-    log_info("📝 삽입 로그 저장 완료 (inserted, skipped, failed)")
+    log_info(" 삽입 로그 저장 완료 (inserted, skipped, failed)")
 
 if __name__ == "__main__":
     insert_from_fallback_json()

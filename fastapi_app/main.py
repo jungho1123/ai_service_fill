@@ -23,7 +23,7 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory=STATIC_PATH), name="static")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 🔓 모든 출처 허용 (실서비스에선 도메인 제한 권장)
+    allow_origins=["*"],  #  모든 출처 허용 (실서비스에선 도메인 제한 권장)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -43,7 +43,9 @@ def pill_info(class_id: str = Query(..., description="예: K-039148")):
         return JSONResponse(status_code=404, content={"message": f"'{class_id}'에 대한 정보가 존재하지 않습니다."})
 
     drug_info = get_drug_info_by_item_seq(item_seq)
-    if "message" in drug_info and "약 정보를 찾을 수 없습니다." in drug_info["message"]:
+
+    # ✅ 확실한 방식으로 fallback 조건 처리
+    if drug_info.get("source") != "api":
         fallback_info = get_fallback_info_from_db(class_id)
         return fallback_info if fallback_info else drug_info
 
@@ -54,7 +56,7 @@ def pill_info(class_id: str = Query(..., description="예: K-039148")):
 def search_pill_by_name(name: str = Query(..., description="예: 타이레놀")):
     return search_drug_by_name(name)
 
-# === POST: 이미지 업로드로 약 예측 ===
+# === POST: 이미지 업로드로 약 예측 ===d
 CONFIDENCE_THRESHOLD = 0.5
 
 @app.post("/predict")

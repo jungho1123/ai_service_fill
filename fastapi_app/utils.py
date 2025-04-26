@@ -74,13 +74,19 @@ def search_drug_by_name(name: str) -> list | dict:
                 return {"message": "해당 이름으로 등록된 약이 없습니다."}
             return [
                 {
-                    "item_name": item.get("itemName"),
-                    "entp_name": item.get("entpName"),
-                    "efcy_qesitm": item.get("efcyQesitm"),
-                    "use_method_qesitm": item.get("useMethodQesitm"),
-                    "atpn_qesitm": item.get("atpnQesitm"),
-                    "item_seq": item.get("itemSeq"),
-                    "item_image": item.get("itemImage") or DEFAULT_IMAGE_URL,
+                    "itemName": item.get("itemName"),
+                    "entpName": item.get("entpName"),
+                    "efcyQesitm": item.get("efcyQesitm"),
+                    "useMethodQesitm": item.get("useMethodQesitm"),
+                    "atpnQesitm": item.get("atpnQesitm"),
+                    "atpnWarnQesitm": item.get("atpnWarnQesitm"),
+                    "intrcQesitm": item.get("intrcQesitm"),
+                    "seQesitm": item.get("seQesitm"),
+                    "depositMethodQesitm": item.get("depositMethodQesitm"),
+                    "itemSeq": item.get("itemSeq"),
+                    "itemImage": item.get("itemImage") or DEFAULT_IMAGE_URL,
+                    "bizrno": item.get("bizrno"),
+                    "source": "api"
                 }
                 for item in items
             ]

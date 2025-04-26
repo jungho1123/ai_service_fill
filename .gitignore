@@ -38,3 +38,7 @@ Thumbs.db
 # Others
 *.sqlite3
 .env
+*.txt
+
+notebook/
+demo/
